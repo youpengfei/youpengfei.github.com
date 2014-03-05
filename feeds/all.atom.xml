@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>worldCode</title><link href="http://worldCode.com:8000/" rel="alternate"></link><link href="http://worldCode.com:8000/feeds/all.atom.xml" rel="self"></link><id>http://worldCode.com:8000/</id><updated>2010-12-03T10:20:00+08:00</updated><entry><title>Dozer的使用方法</title><link href="http://worldCode.com:8000/java,%E6%8A%80%E6%9C%AF.html" rel="alternate"></link><updated>2010-12-03T10:20:00+08:00</updated><author><name>尤鹏飞</name></author><id>tag:worldCode.com:8000,2010-12-03:java,技术.html</id><summary type="html">&lt;p&gt;Dozer是apache下的一个bean转换类库，按照公司内的大牛的说法它功能远胜于BeanUtils在bean转换方式，而且它极易与spring集成。所以做项目的时候直接选择了它作为bean转化的工具类。下面先介绍一下他的简单用法。&lt;br&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>worldCode</title><link href="http://www.worldCode.org/" rel="alternate"></link><link href="http://www.worldCode.org/feeds/all.atom.xml" rel="self"></link><id>http://www.worldCode.org/</id><updated>2010-12-03T10:20:00+08:00</updated><entry><title>Dozer的使用方法</title><link href="http://www.worldCode.org/java,%E6%8A%80%E6%9C%AF.html" rel="alternate"></link><updated>2010-12-03T10:20:00+08:00</updated><author><name>尤鹏飞</name></author><id>tag:www.worldCode.org,2010-12-03:java,技术.html</id><summary type="html">&lt;p&gt;Dozer是apache下的一个bean转换类库，按照公司内的大牛的说法它功能远胜于BeanUtils在bean转换方式，而且它极易与spring集成。所以做项目的时候直接选择了它作为bean转化的工具类。下面先介绍一下他的简单用法。&lt;br&gt;
 首先，你需要引入jar包，在pom中添加如下依赖：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;     &lt;span class="nt"&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt; 
         &lt;span class="nt"&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;net.sf.dozer&lt;span class="nt"&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
@@ -135,7 +135,7 @@
 
 
 &lt;p&gt;该类需要实现一个DozerConverter的父类，还必须有个空的构造方法，该构造方法必须实例化一个带有两个参数的构造函数。这两个参数都是类型，第一个是转换属性的类型，第二个是被转换的属性的类型。该类还需要重载两个方法，一个叫convertTo，另一个叫convertFrom，因为项目中只用到了从VO到TO的转换，所以我只重写了convertTo方法。
-以上就是Dozer的基本使用方法，还是那句话希望这篇文字能够起到抛砖引玉的作用.&lt;/p&gt;</summary><category term="技术"></category><category term="java"></category><category term="dozer"></category></entry><entry><title>rake是什么</title><link href="http://worldCode.com:8000/ruby.html" rel="alternate"></link><updated>2010-12-03T10:20:00+08:00</updated><author><name>尤鹏飞</name></author><id>tag:worldCode.com:8000,2010-12-03:ruby.html</id><summary type="html">&lt;p&gt;前一段时间忽然有点神经质的非得搞一个个人独立域名的博客。刚开始的是wordpress后来因为vps的问题就放弃了（主要是成本问题）。后来很多大哥大姐们纷纷在博客上“痛心疾首”宣布要用换成&lt;a href="http://octopress.org/"&gt;octopress&lt;/a&gt;。换成这个博客当然有诸多好处，最大的好处当然是不用花钱。&lt;/p&gt;
+以上就是Dozer的基本使用方法，还是那句话希望这篇文字能够起到抛砖引玉的作用.&lt;/p&gt;</summary><category term="技术"></category><category term="java"></category><category term="dozer"></category></entry><entry><title>rake是什么</title><link href="http://www.worldCode.org/ruby.html" rel="alternate"></link><updated>2010-12-03T10:20:00+08:00</updated><author><name>尤鹏飞</name></author><id>tag:www.worldCode.org,2010-12-03:ruby.html</id><summary type="html">&lt;p&gt;前一段时间忽然有点神经质的非得搞一个个人独立域名的博客。刚开始的是wordpress后来因为vps的问题就放弃了（主要是成本问题）。后来很多大哥大姐们纷纷在博客上“痛心疾首”宣布要用换成&lt;a href="http://octopress.org/"&gt;octopress&lt;/a&gt;。换成这个博客当然有诸多好处，最大的好处当然是不用花钱。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;这个世界上但凡不用花钱的东西，都得花精力去研究。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -170,7 +170,7 @@
 
 &lt;p&gt;如果你想要运行test2，需要运行rake test2。
 当然rake还支持继承等多种功能。&lt;a href="http://rake.rubyforge.org/"&gt;官方网站&lt;/a&gt;有更加深入的说明。
-这篇博客就是为了解释rake是什么。希望能起到抛砖引玉的作用。&lt;/p&gt;</summary><category term="编程"></category><category term="ruby"></category></entry><entry><title>我对编程学习的看法</title><link href="http://worldCode.com:8000/talk.html" rel="alternate"></link><updated>2010-12-03T10:20:00+08:00</updated><author><name>尤鹏飞</name></author><id>tag:worldCode.com:8000,2010-12-03:talk.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;郑重声明，这篇文章与技术无关，绕行&lt;/strong&gt;&lt;/p&gt;
+这篇博客就是为了解释rake是什么。希望能起到抛砖引玉的作用。&lt;/p&gt;</summary><category term="编程"></category><category term="ruby"></category></entry><entry><title>我对编程学习的看法</title><link href="http://www.worldCode.org/talk.html" rel="alternate"></link><updated>2010-12-03T10:20:00+08:00</updated><author><name>尤鹏飞</name></author><id>tag:www.worldCode.org,2010-12-03:talk.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;郑重声明，这篇文章与技术无关，绕行&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;我是一个开发者，作程序开发已经已经两三年了。其实想想自己挺郁闷的。之前都是在小公司上班，加上又是一个刚毕业的毛头小子，所以很热衷课外学习。每天都努力的看很多的书，每天都回家逛计算机博客论坛。对于公司不上进的个别人士特别的鄙视。心想计算机是每天都更新的行业，不学习的人不应该来计算机这个行业。有时候会买很多书（虽然很多书都没有看）。&lt;/p&gt;
 &lt;p&gt;转机是在去年，我换了家公司，来到了我梦寐以求的一个互联网电商公司。总觉得自己的努力没有白费，因为我的工资比比我入职很早的人多了好几个级别。当时心情很激动，当然就是工作很努力。可能是年纪大了的缘故，有时候刚觉很累。加上自己有喜欢没事瞎想，多年的暴饮暴食的坏习惯终于导致了我的胃不舒服。&lt;/p&gt;
 &lt;p&gt;我开始胡思乱想，我是不是因为经常熬夜得了绝症（当然，这只是一个猜测，我没有那么脆弱）。后来去医院医生告诉我你得的是浅表性胃炎，再后来就吃了很长时间的药，就慢慢的好了。但是这件事情给我敲响了警钟，是不是一定要以牺牲健康为代价进步呢？当然不能。试想一下，如果假如有一天，你因为劳累过度挂了。你就什么都没有了。我们现在是程序员就意味着我们可能只能干一些正常人类应该干的事情。我们不是伟人没有义务和能力干牛逼的事情。我们尽力干好本分的工作就OK了，不需要这么拼命的去争取。&lt;/p&gt;
