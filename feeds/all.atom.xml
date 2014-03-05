@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>worldCode</title><link href="http://worldCode.com:8000/" rel="alternate"></link><link href="http://worldCode.com:8000/feeds/all.atom.xml" rel="self"></link><id>http://worldCode.com:8000/</id><updated>2010-12-03T10:20:00+08:00</updated><entry><title>Dozer的使用方法</title><link href="http://worldCode.com:8000/java,%E6%8A%80%E6%9C%AF.html" rel="alternate"></link><updated>2010-12-03T10:20:00+08:00</updated><author><name>尤鹏飞</name></author><id>tag:worldCode.com:8000,2010-12-03:java,技术.html</id><summary type="html">&lt;p&gt;Dozer是apache下的一个bean转换类库，按照公司内的大牛的说法它功能远胜于BeanUtils在bean转换方式，而且它极易与spring集成。所以做项目的时候直接选择了它作为bean转化的工具类。下面先介绍一下他的简单用法。&lt;br&gt;
+首先，你需要引入jar包，在pom中添加如下依赖：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;     &lt;span class="nt"&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt; 
+        &lt;span class="nt"&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;net.sf.dozer&lt;span class="nt"&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;dozer&lt;span class="nt"&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;version&amp;gt;&lt;/span&gt;5.3.2&lt;span class="nt"&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;dom4j&lt;span class="nt"&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;dom4j&lt;span class="nt"&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.6&lt;span class="nt"&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;jaxen&lt;span class="nt"&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;jaxen&lt;span class="nt"&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.1.1&lt;span class="nt"&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.slf4j&lt;span class="nt"&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;slf4j-log4j12&lt;span class="nt"&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.5.8&lt;span class="nt"&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.slf4j&lt;span class="nt"&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;jcl-over-slf4j&lt;span class="nt"&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.5.8&lt;span class="nt"&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;需要在spring配置文件中这样配置:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="nt"&gt;&amp;lt;bean&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dozerMapper&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;org.dozer.spring.DozerBeanMapperFactoryBean&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;mappingFiles&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;list&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;value&amp;gt;&lt;/span&gt;classpath*:dozer-BeanMapping.xml&lt;span class="nt"&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;/list&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/bean&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在类路径下需要这样一个配置文件dozer-BeanMapping.xml，内容如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="cp"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;mappings&lt;/span&gt; &lt;span class="na"&gt;xmlns=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://dozer.sourceforge.net&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;xmlns:xsi=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://www.w3.org/    2001/XMLSchema-instance&amp;quot;&lt;/span&gt;
+    &lt;span class="na"&gt;xsi:schemaLocation=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://dozer.sourceforge.net&lt;/span&gt;
+&lt;span class="s"&gt;      http://dozer.sourceforge.net/schema/beanmapping.xsd&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;stop-on-errors&amp;gt;&lt;/span&gt;true&lt;span class="nt"&gt;&amp;lt;/stop-on-errors&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;date-format&amp;gt;&lt;/span&gt;yyyy-MM-dd HH:mm&lt;span class="nt"&gt;&amp;lt;/date-format&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;wildcard&amp;gt;&lt;/span&gt;true&lt;span class="nt"&gt;&amp;lt;/wildcard&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/mappings&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;然后再spring的bean中这样注入：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nd"&gt;@Autowired&lt;/span&gt;
+&lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="n"&gt;Mapper&lt;/span&gt; &lt;span class="n"&gt;dozzerMap&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;使用方法大致是这样的：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;BookCondition&lt;/span&gt; &lt;span class="n"&gt;bookCondition&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dozzerMap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;map&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bookQueryDto&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;BookCondition&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;好学的同学会发现现在的用法好像都是默认的没有什么配置，当然如果仅是这么简单的用法，我也不会在这边写这么长时间的wiki了。当然有很多和配置的东西了。
+例如A类中的x属性需要和B类中的y属性转换就可以这样配置：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;mapping&amp;gt;&lt;/span&gt; 
+&lt;span class="nt"&gt;&amp;lt;class-a&amp;gt;&lt;/span&gt;A &lt;span class="nt"&gt;&amp;lt;/class-a &amp;gt;&lt;/span&gt; 
+&lt;span class="nt"&gt;&amp;lt;class-b&amp;gt;&lt;/span&gt; B &lt;span class="nt"&gt;&amp;lt;/class-b&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;field&amp;gt;&lt;/span&gt;
+         &lt;span class="nt"&gt;&amp;lt;a&amp;gt;&lt;/span&gt;
+          x
+        &lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;
+          y
+       &lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/mapping&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样就能实现x和y之间同类型的转换。但是这样的同样类型之间的转换又太过简单怎么可能满足我们的需求。当然作为一个框架肯定有可定制的东西了，于是就有了custom-converter——自定义转换器。例如在VO中是String类型productCodes（以逗号或者换行分割的字符串）需要转化到TO中的productCodes确是一个List。这时就需要我们的custom-converter标签了。配置方法是这样的：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="nt"&gt;&amp;lt;mapping&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;class-a&amp;gt;&lt;/span&gt;
+        com.jd.vc.sub.report.vo.stockSales.OtherStockSalesQueryVo
+    &lt;span class="nt"&gt;&amp;lt;/class-a&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;class-b&amp;gt;&lt;/span&gt;
+        com.jd.vc.reports.OtherQueryDto
+    &lt;span class="nt"&gt;&amp;lt;/class-b&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;field&lt;/span&gt; &lt;span class="na"&gt;custom-converter=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;com.jd.vc.sub.report.util.StringAndListDozerConverter&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;a&amp;gt;&lt;/span&gt;
+            productCodes
+        &lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;
+            productCodes
+        &lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/fied&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/mapping&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;当然这样的标签式需要手写代码支持，代码是这样的：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;jd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;vc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sub&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;report&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;util&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;org.apache.commons.collections.CollectionUtils&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;org.apache.commons.lang.StringUtils&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;org.dozer.DozerConverter&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;java.util.Arrays&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;java.util.List&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt;* @author youpengfeiinfo&lt;/span&gt;
+&lt;span class="cm"&gt;* @version 13-3-20&lt;/span&gt;
+&lt;span class="cm"&gt;*/&lt;/span&gt;
+
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;StringAndListDozerConverter&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;DozerConverter&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;List&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="nf"&gt;StringAndListDozerConverter&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;List&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="nd"&gt;@Override&lt;/span&gt;
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="n"&gt;List&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nf"&gt;convertTo&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;source&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;List&lt;/span&gt; &lt;span class="n"&gt;destination&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;destination&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Arrays&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;asList&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;StringUtils&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;split&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;source&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;\r\n, &amp;quot;&lt;/span&gt;&lt;span class="o"&gt;));&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;destination&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="nd"&gt;@Override&lt;/span&gt;
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="nf"&gt;convertFrom&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;List&lt;/span&gt; &lt;span class="n"&gt;source&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;destination&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;该类需要实现一个DozerConverter的父类，还必须有个空的构造方法，该构造方法必须实例化一个带有两个参数的构造函数。这两个参数都是类型，第一个是转换属性的类型，第二个是被转换的属性的类型。该类还需要重载两个方法，一个叫convertTo，另一个叫convertFrom，因为项目中只用到了从VO到TO的转换，所以我只重写了convertTo方法。
+以上就是Dozer的基本使用方法，还是那句话希望这篇文字能够起到抛砖引玉的作用.&lt;/p&gt;</summary><category term="技术"></category><category term="java"></category><category term="dozer"></category></entry><entry><title>rake是什么</title><link href="http://worldCode.com:8000/ruby.html" rel="alternate"></link><updated>2010-12-03T10:20:00+08:00</updated><author><name>尤鹏飞</name></author><id>tag:worldCode.com:8000,2010-12-03:ruby.html</id><summary type="html">&lt;p&gt;前一段时间忽然有点神经质的非得搞一个个人独立域名的博客。刚开始的是wordpress后来因为vps的问题就放弃了（主要是成本问题）。后来很多大哥大姐们纷纷在博客上“痛心疾首”宣布要用换成&lt;a href="http://octopress.org/"&gt;octopress&lt;/a&gt;。换成这个博客当然有诸多好处，最大的好处当然是不用花钱。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这个世界上但凡不用花钱的东西，都得花精力去研究。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;研究对于我来说是再简单不过了。最大的屏障其实是学习使用这个博客的命令。毕竟我是一个java系统的程序员。对于像ruby这样的东西还不是很熟悉。还好这个博客系统已经做的相当成熟了，只要你有一个github帐号就可以搞定所有的事情，但是ruby的版本需要再1.9.3，跟官网一样就行。详细介绍怎么使用这个工具，官方网站上已经有了很详细的介绍了，我就不再扯闲篇了。言归正传，我开始使用rake这个命令。由于我以前没有用过ruby这个语言，所以不知道rake是什么。&lt;/p&gt;
+&lt;p&gt;经过不断的Google，终于知道了她的庐山真面目，其实rake在java的世界里面也有一个与之对应的工具，那就是ant。不过很多人都会很郁闷，ruby是一个解释性的语言，代码是不需要编译的为什么会有一个像ant一样的东西呢。&lt;/p&gt;
+&lt;p&gt;答案当然是肯定的，因为ruby的一个很成熟的框架叫rails。里面有一句很经典的名言。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="http://en.wikipedia.org/wiki/Don't_repeat_yourself"&gt;DRY&lt;/a&gt; Don't repeat yourself&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;所以不可能产生一个没有任何用处的东西。
+ 以上说明rake肯定是有用处的。有什么用呢？用过windows的人都知道有一个以bat为后缀的批处理文件，在linux里面有一个以.sh为后缀的文件（当然linux是不会计较你用任何一种后缀的）。这些东西都是需要批处理的。有了批处理，就有任务的概念。所以rake中也有任务的概念。具体的写法是这样的。文件的名称要叫RakeFile。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:default&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:test&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:test&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+        &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;hello,world;&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样在当前目录下运行rake，就会打印出hello，world。这就是一个很简单的demo，当然是我从官方文档上面抄袭下来的。这是ruby代码。 也是可以些很多个任务。但是默认的就只有一个。例如：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:default&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:test&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:test&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;hello,world;&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:test2&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;hello,world2;&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:test3&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;hello,world3;&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果你想要运行test2，需要运行rake test2。
+当然rake还支持继承等多种功能。&lt;a href="http://rake.rubyforge.org/"&gt;官方网站&lt;/a&gt;有更加深入的说明。
+这篇博客就是为了解释rake是什么。希望能起到抛砖引玉的作用。&lt;/p&gt;</summary><category term="编程"></category><category term="ruby"></category></entry><entry><title>我对编程学习的看法</title><link href="http://worldCode.com:8000/talk.html" rel="alternate"></link><updated>2010-12-03T10:20:00+08:00</updated><author><name>尤鹏飞</name></author><id>tag:worldCode.com:8000,2010-12-03:talk.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;郑重声明，这篇文章与技术无关，绕行&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我是一个开发者，作程序开发已经已经两三年了。其实想想自己挺郁闷的。之前都是在小公司上班，加上又是一个刚毕业的毛头小子，所以很热衷课外学习。每天都努力的看很多的书，每天都回家逛计算机博客论坛。对于公司不上进的个别人士特别的鄙视。心想计算机是每天都更新的行业，不学习的人不应该来计算机这个行业。有时候会买很多书（虽然很多书都没有看）。&lt;/p&gt;
+&lt;p&gt;转机是在去年，我换了家公司，来到了我梦寐以求的一个互联网电商公司。总觉得自己的努力没有白费，因为我的工资比比我入职很早的人多了好几个级别。当时心情很激动，当然就是工作很努力。可能是年纪大了的缘故，有时候刚觉很累。加上自己有喜欢没事瞎想，多年的暴饮暴食的坏习惯终于导致了我的胃不舒服。&lt;/p&gt;
+&lt;p&gt;我开始胡思乱想，我是不是因为经常熬夜得了绝症（当然，这只是一个猜测，我没有那么脆弱）。后来去医院医生告诉我你得的是浅表性胃炎，再后来就吃了很长时间的药，就慢慢的好了。但是这件事情给我敲响了警钟，是不是一定要以牺牲健康为代价进步呢？当然不能。试想一下，如果假如有一天，你因为劳累过度挂了。你就什么都没有了。我们现在是程序员就意味着我们可能只能干一些正常人类应该干的事情。我们不是伟人没有义务和能力干牛逼的事情。我们尽力干好本分的工作就OK了，不需要这么拼命的去争取。&lt;/p&gt;
+&lt;p&gt;尽管我是个屌丝，尽管我只是个程序员，但是我有权利选择我自己的生活。尽全力的生活，不拼命的工作。只要努力就够了。&lt;/p&gt;</summary><category term="人生"></category><category term="思考"></category></entry></feed>

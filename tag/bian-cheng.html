@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>worldCode</title>
+    <meta name="description" content="">
+    <meta name="author" content="youpengfei">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="../theme/html5.js"></script>
+    <![endif]-->
+
+    
+    <!-- Le styles -->
+    <link href="../theme/bootstrap.min.css" rel="stylesheet">
+    <link href="../theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="../theme/local.css" rel="stylesheet">
+    <link href="../theme/pygments.css" rel="stylesheet">
+    
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="navbar-inner">
+    <div class="container">
+
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </a>
+
+        <a class="brand" href="..">worldCode</a>
+
+        <div class="nav-collapse">
+        <ul class="nav">
+            
+            <li><a href="../pages/about.html">About</a></li>
+        </ul>
+        </div>
+        
+    </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="content">
+    <div class="row">
+
+        <div class="span9">
+        
+
+        
+
+
+    <div class='article'>
+        <div class="content-title">
+            <a href="../ruby.html"><h1>rake是什么</h1></a>
+五 03 十二月 2010
+
+by <a class="url fn" href="../author/you-peng-fei.html">尤鹏飞</a>
+ 
+
+
+ 
+        </div>
+        
+        <div><p>前一段时间忽然有点神经质的非得搞一个个人独立域名的博客。刚开始的是wordpress后来因为vps的问题就放弃了（主要是成本问题）。后来很多大哥大姐们纷纷在博客上“痛心疾首”宣布要用换成<a href="http://octopress.org/">octopress</a>。换成这个博客当然有诸多好处，最大的好处当然是不用花钱。</p>
+<blockquote>
+<p>这个世界上但凡不用花钱的东西，都得花精力去研究。</p>
+</blockquote>
+<p>研究对于我来说是再简单不过了。最大的屏障其实是学习使用这个博客的命令。毕竟我是一个java系统的程序员。对于像ruby这样的东西还不是很熟悉。还好这个博客系统已经做的相当成熟了，只要你有一个github帐号就可以搞定所有的事情，但是ruby的版本需要再1.9.3，跟官网一样就行。详细介绍怎么使用这个工具，官方网站上已经有了很详细的介绍了，我就不再扯闲篇了。言归正传，我开始使用rake这个命令。由于我以前没有用过ruby这个语言，所以不知道rake是什么。</p>
+<p>经过不断的Google，终于知道了她的庐山真面目，其实rake在java的世界里面也有一个与之对应的工具，那就是ant。不过很多人都会很郁闷，ruby是一个解释性的语言，代码是不需要编译的为什么会有一个像ant一样的东西呢。</p>
+<p>答案当然是肯定的，因为ruby的一个很成熟的框架叫rails。里面有一句很经典的名言。</p>
+<blockquote>
+<p><a href="http://en.wikipedia.org/wiki/Don't_repeat_yourself">DRY</a> Don't repeat yourself</p>
+</blockquote>
+<p>所以不可能产生一个没有任何用处的东西。
+ 以上说明rake肯定是有用处的。有什么用呢？用过windows的人都知道有一个以bat为后缀的批处理文件，在linux里面有一个以.sh为后缀的文件（当然linux是不会计较你用任何一种后缀的）。这些东西都是需要批处理的。有了批处理，就有任务的概念。所以rake中也有任务的概念。具体的写法是这样的。文件的名称要叫RakeFile。</p>
+<div class="highlight"><pre><span class="n">task</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:test</span><span class="o">]</span>
+    <span class="n">task</span> <span class="ss">:test</span> <span class="k">do</span>
+        <span class="nb">puts</span> <span class="s2">&quot;hello,world;&quot;</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>这样在当前目录下运行rake，就会打印出hello，world。这就是一个很简单的demo，当然是我从官方文档上面抄袭下来的。这是ruby代码。 也是可以些很多个任务。但是默认的就只有一个。例如：</p>
+<div class="highlight"><pre><span class="n">task</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:test</span><span class="o">]</span>
+<span class="n">task</span> <span class="ss">:test</span> <span class="k">do</span>
+    <span class="nb">puts</span> <span class="s2">&quot;hello,world;&quot;</span>
+<span class="k">end</span>
+<span class="n">task</span> <span class="ss">:test2</span> <span class="k">do</span>
+    <span class="nb">puts</span> <span class="s2">&quot;hello,world2;&quot;</span>
+<span class="k">end</span>
+<span class="n">task</span> <span class="ss">:test3</span> <span class="k">do</span>
+    <span class="nb">puts</span> <span class="s2">&quot;hello,world3;&quot;</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>如果你想要运行test2，需要运行rake test2。
+当然rake还支持继承等多种功能。<a href="http://rake.rubyforge.org/">官方网站</a>有更加深入的说明。
+这篇博客就是为了解释rake是什么。希望能起到抛砖引玉的作用。</p></div>
+        <hr />
+    </div>
+		
+<div class="pagination">
+<ul>
+    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
+
+    <li class="active"><a href="../tag/bian-cheng.html">1</a></li>
+
+    <li class="next disabled"><a href="#">&rarr; Next</a></li>
+
+</ul>
+</div>
+ 
+  
+        </div>
+        
+        <div class="span3">
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Site
+                </li>
+            
+                <li><a href="../Archives.html">Archives</a>
+                <li><a href="../tags.html">Tags</a>
+                <li><a href="../feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
+            </ul>
+            </div>
+
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Categories
+                </li>
+                
+                <li><a href="../category/ji-zhu.html">技术</a></li>
+                <li><a href="../category/za-tan.html">杂谈</a></li>
+                   
+            </ul>
+            </div>
+
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Links
+                </li>
+            
+                <li><a href="http://coolshell.cn/">酷壳</a></li>
+                <li><a href="http://www.linuxzen.com/">cold"s world</a></li>
+            </ul>
+            </div>
+
+
+
+        </div>  
+    </div>     </div> 
+<footer>
+<br />
+<p><a href="..">worldCode</a> &copy; youpengfei 2012</p>
+</footer>
+
+</div> <!-- /container -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+ 
+</body>
+</html>
